@@ -36,7 +36,7 @@ export function csvCell(value) {
 export function reportCsv(job, detailed = false) {
   const rows = detailed ? [['Pallet','Complete','Part number','Description','Lot','UOM','Quantity','Condition','Notes','Counted at','Outer quantity','Outer UOM','Inner quantity per outer','Inner UOM','Units per inner'],
     ...job.pallets.flatMap(p => p.counts.map(c => [p.name,p.complete?'Yes':'No',c.part,c.description,c.lot,c.uom,c.qty,c.condition,c.notes,c.at,c.packages??'',c.packaging?.outer??'',c.packaging?.innerQty??'',c.packaging?.inner??'',c.packaging?.units??c.units??'']))]
-    : [['Part number','Description','Lot','UOM','Expected','Counted','Variance','Status','Pallets'], ...reconcile(job).map(r => [r.part,r.description,r.lot,r.uom,r.expected,r.actual,r.variance,r.status,r.pallets.join('; ')])];
+    : [['Part number','Description','Lot','UOM','Expected','Counted','Variance','Status','Pallets','Listed cases (source)','Expiry dates (source)'], ...reconcile(job).map(r => [r.part,r.description,r.lot,r.uom,r.expected,r.actual,r.variance,r.status,r.pallets.join('; '),job.expected.filter(x=>itemKey(x)===r.key).map(x=>x.cases||'').filter(Boolean).join('; '),job.expected.filter(x=>itemKey(x)===r.key).map(x=>x.expiry||'').filter(Boolean).join('; ')])];
   return '\uFEFF' + rows.map(row => row.map(csvCell).join(',')).join('\r\n');
 }
 export function newJob(name, customer, palletCount = 1) {

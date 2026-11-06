@@ -1,4 +1,4 @@
-const aliases = {part:['part','partnumber','partno','partnum','sku','item','itemnumber','itemno','productcode','product','material','codigo','codigoarticulo'],description:['description','desc','descripcion','productdescription','itemdescription'],qty:['qty','quantity','units','totalqty','totalquantity','cantidad','pieces','pcs'],lot:['lot','lotnumber','lotno','batch','batchno','lote'],uom:['uom','unit','unitofmeasure','unidad'],pallet:['pallet','palletno','palletnumber','palletid','tarima']};
+const aliases = {cases:['cases','shippedcases','cartons','ctns'],expiry:['expiry','expirydate','expiration','expirationdate'],part:['part','partnumber','partno','partnum','sku','item','itemnumber','itemno','productcode','product','material','codigo','codigoarticulo'],description:['description','desc','descripcion','productdescription','itemdescription'],qty:['qty','quantity','units','totalqty','totalquantity','cantidad','pieces','pcs'],lot:['lot','lotnumber','lotno','batch','batchno','lote'],uom:['uom','unit','unitofmeasure','unidad'],pallet:['pallet','palletno','palletnumber','palletid','tarima']};
 const headerKey = s => String(s??'').toLowerCase().replace(/[^a-z0-9]/g,'');
 export function guessMapping(headers) {
   return Object.fromEntries(Object.entries(aliases).map(([field, names]) => [field, headers.findIndex(h=>names.includes(headerKey(h)))]));
@@ -28,7 +28,7 @@ export function parseText(text) {
   return extractTable(matrix);
 }
 export function mappedRows(table, mapping) {
-  return table.rows.map((r,index)=>({sourceRow:index+1,part:String(r[mapping.part]??'').trim(),description:String(r[mapping.description]??'').trim(),qty:String(r[mapping.qty]??'').replace(/,/g,'').trim(),lot:String(r[mapping.lot]??'').trim(),uom:String(r[mapping.uom]??'EA').trim().toUpperCase()||'EA',pallet:String(r[mapping.pallet]??'').trim()}));
+  return table.rows.map((r,index)=>({sourceRow:index+1,part:String(r[mapping.part]??'').trim(),description:String(r[mapping.description]??'').trim(),qty:String(r[mapping.qty]??'').replace(/,/g,'').trim(),lot:String(r[mapping.lot]??'').trim(),uom:String(r[mapping.uom]??'EA').trim().toUpperCase()||'EA',pallet:String(r[mapping.pallet]??'').trim(),cases:String(r[mapping.cases]??'').trim(),expiry:String(r[mapping.expiry]??'').trim()}));
 }
 // Rebuild OCR columns from word positions instead of trusting collapsed whitespace.
 export function positionedText(words) {

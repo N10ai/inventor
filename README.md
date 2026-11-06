@@ -32,7 +32,7 @@ An explicitly labeled 24-pallet sample job is available from the empty state. It
 
 This first version saves structured job data in IndexedDB **on the current browser/device**. It does not synchronize between people or devices and has no user accounts. Clearing browser storage removes that local data; export backups regularly. The original uploaded file is processed in memory, not retained, and its filename/method/reviewed rows are recorded. Printed reports contain customer details; handle exports appropriately.
 
-Document processing runs locally in the browser. OCR downloads its worker, WebAssembly, and English language model when first used, so it requires an internet connection. Packing lists vary: heuristic text extraction and OCR are not a universal AI table-recognition service. Always review part numbers, quantities, lots, and units before accepting. Cloud AI extraction, retained original documents, photos, shared sessions, roles, and durable server storage are future integration work.
+Document processing runs locally in the browser. OCR downloads its worker, WebAssembly, and English language model when first used, so it requires an internet connection. Packing lists vary: heuristic text extraction and OCR are not a universal AI table-recognition service. Always review part numbers, quantities, lots, and units before accepting. Cloud AI extraction, retained original documents, shared sessions, roles, and durable server storage are future integration work.
 
 ## Structure
 
@@ -46,3 +46,13 @@ Document processing runs locally in the browser. OCR downloads its worker, WebAs
 ## Next production step
 
 Add authenticated team storage and append-only count events before simultaneous use by multiple warehouse employees. Keep job, physical pallet, count entry, imported expected line, and source document as separate records; aggregate counts by part/lot/UOM instead of editing one global stock number.
+
+## Visual shipper layouts
+
+PDFs and images open beside editable column bands. Choose the suggested Ansell layout or define columns for part, quantity, UOM, lot, pallet, cases and expiry. Drag across a document column or edit its percentage bounds. Use the read range to exclude unwanted headers/footers. Grouped pallet headings carry to subsequent item rows and across pages. Descriptions can wrap. Review the extracted items before accepting; source cases and expiry stay separate from inventory quantity. Optional empty physical pallets use the imported identifiers, without adding counts.
+
+Save named shipper profiles on this device and reapply them on later uploads. Profiles travel in JSON backups. They are coordinate-based layouts, not cloud AI: a shipper changing page margins or columns requires adjustment. OCR uncertainties remain reviewable. For best results upload the original PDF or a sharp scan rather than a compressed screenshot.
+
+## GitHub Pages
+
+The Pages workflow runs tests, builds Vite, uploads `dist`, and deploys the compiled app. Relative asset URLs support both `/inventor/` and root hosting. In repository Settings → Pages, select **GitHub Actions** as the build source if the repository still uses branch/Jekyll publishing. Source files alone cannot run as a GitHub Pages app.
