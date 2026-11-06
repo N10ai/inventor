@@ -32,10 +32,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Use the compiled Pages workflow as the publishing source
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: gh api --method PUT "repos/$GH_REPO/pages" -f build_type=workflow
       - uses: actions/deploy-pages@v4
         id: deployment
