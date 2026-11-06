@@ -1,3 +1,4 @@
+import {id} from './core.js';
 import {fields,ansellLayout,genericLayout,extractLayout} from './layout.js';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function visualImport({dialog,data,profiles,onProfiles,onAccept,onClassic,notify}){
@@ -9,7 +10,7 @@ export function visualImport({dialog,data,profiles,onProfiles,onAccept,onClassic
  const $=s=>dialog.querySelector(s);$('#visual-close').onclick=()=>dialog.close();$('#classic-import').onclick=()=>{dialog.classList.remove('visual-import');onClassic();};
  $('#prev-page').onclick=()=>{page--;draw();};$('#next-page').onclick=()=>{page++;draw();};
  $('#profile-select').onchange=e=>{rows=[];warnings=[];layout=structuredClone(e.target.value==='ansell'?ansellLayout():e.target.value==='generic'?genericLayout():profiles.find(p=>p.id===e.target.value)?.layout||layout);draw();};
- $('#save-profile').onclick=()=>{if(!validLayout())return;const name=$('#profile-name').value.trim();if(!name)return notify('Enter a shipper profile name.');const old=profiles.find(p=>p.name.toLowerCase()===name.toLowerCase());if(old)old.layout=structuredClone(layout);else profiles.push({id:crypto.randomUUID(),name,layout:structuredClone(layout)});onProfiles(profiles);notify('Shipper layout saved on this device.');draw();};
+ $('#save-profile').onclick=()=>{if(!validLayout())return;const name=$('#profile-name').value.trim();if(!name)return notify('Enter a shipper profile name.');const old=profiles.find(p=>p.name.toLowerCase()===name.toLowerCase());if(old)old.layout=structuredClone(layout);else profiles.push({id:id(),name,layout:structuredClone(layout)});onProfiles(profiles);notify('Shipper layout saved on this device.');draw();};
  dialog.querySelectorAll('[data-column]').forEach(el=>el.onclick=()=>{selected=el.dataset.column;dialog.querySelectorAll('[data-column]').forEach(b=>b.classList.toggle('selected',b===el));});
  dialog.querySelectorAll('[data-edge]').forEach(el=>el.onchange=()=>{const [key,edge]=el.dataset.edge.split(':');layout.columns[key]||=[0,100];layout.columns[key][Number(edge)]=Number(el.value);rows=[];warnings=[];bands();review();});
  dialog.querySelectorAll('[data-clear]').forEach(el=>el.onclick=()=>{delete layout.columns[el.dataset.clear];rows=[];warnings=[];draw();});
