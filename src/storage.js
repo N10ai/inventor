@@ -1,0 +1,4 @@
+const DB='inventor-local';
+function database(){return new Promise((resolve,reject)=>{const req=indexedDB.open(DB,1);req.onupgradeneeded=()=>req.result.createObjectStore('state');req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+export async function readState(){const db=await database();try{return await new Promise((resolve,reject)=>{const r=db.transaction('state').objectStore('state').get('workspace');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}finally{db.close();}}
+export async function writeState(value){const db=await database();try{await new Promise((resolve,reject)=>{const tx=db.transaction('state','readwrite');tx.objectStore('state').put(value,'workspace');tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});}finally{db.close();}}
