@@ -34,8 +34,8 @@ export function csvCell(value) {
   return '"' + text.replaceAll('"', '""') + '"';
 }
 export function reportCsv(job, detailed = false) {
-  const rows = detailed ? [['Pallet','Complete','Part number','Description','Lot','UOM','Quantity','Condition','Notes','Counted at'],
-    ...job.pallets.flatMap(p => p.counts.map(c => [p.name,p.complete?'Yes':'No',c.part,c.description,c.lot,c.uom,c.qty,c.condition,c.notes,c.at]))]
+  const rows = detailed ? [['Pallet','Complete','Part number','Description','Lot','UOM','Quantity','Condition','Notes','Counted at','Outer quantity','Outer UOM','Inner quantity per outer','Inner UOM','Units per inner'],
+    ...job.pallets.flatMap(p => p.counts.map(c => [p.name,p.complete?'Yes':'No',c.part,c.description,c.lot,c.uom,c.qty,c.condition,c.notes,c.at,c.packages??'',c.packaging?.outer??'',c.packaging?.innerQty??'',c.packaging?.inner??'',c.packaging?.units??c.units??'']))]
     : [['Part number','Description','Lot','UOM','Expected','Counted','Variance','Status','Pallets'], ...reconcile(job).map(r => [r.part,r.description,r.lot,r.uom,r.expected,r.actual,r.variance,r.status,r.pallets.join('; ')])];
   return '\uFEFF' + rows.map(row => row.map(csvCell).join(',')).join('\r\n');
 }
